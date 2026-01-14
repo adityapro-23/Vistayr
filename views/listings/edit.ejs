@@ -1,4 +1,4 @@
-<% layout("/layouts/boilerplate") %>
+<% layout("layouts/boilerplate") %>
 <div class="row mt-3">
     <div class="col-8 offset-2">
         <h3>Edit your Listing</h3>
@@ -61,7 +61,7 @@
 
             <div class="mb-3 form-check form-switch d-flex">
                 <label for="instantBooking" class="form-check-label">Enable Instant Booking?*</label>
-                <input class="form-check-input ms-4 mt-2" type="checkbox" role="switch" name="instantBooking" id="instantBooking" <%= listing.instantBooking ? "checked" : "" %>>
+                <input class="form-check-input ms-4 mt-2" type="checkbox" role="switch" name="listing[instantBooking]" id="instantBooking" <%= listing.instantBooking ? "checked" : "" %>>
             </div>
             
             <button class="btn btn-dark edit-btn mt-3">Edit</button>

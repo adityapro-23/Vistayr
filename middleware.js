@@ -31,6 +31,13 @@ module.exports.isOwner = async (req, res, next) => {
 };
 
 module.exports.validateListing = (req, res, next) => {
+    // Convert instantBooking to boolean before validation
+    if (req.body.listing && req.body.listing.instantBooking !== undefined) {
+        req.body.listing.instantBooking = req.body.listing.instantBooking === 'true' || req.body.listing.instantBooking === 'on';
+    } else if (req.body.listing) {
+        req.body.listing.instantBooking = false;  // Default to false if not provided
+    }
+    
     let {error} = listingSchema.validate(req.body);
     if(error) {
         let errMsg = error.details.map((el) => el.message).join(",");

@@ -7,6 +7,21 @@ module.exports.renderSignupForm = (req, res) => {
 module.exports.signup = async (req, res) => {
     try {
         let { username, email, password, role } = req.body;
+
+        // Check: If username already exists
+        const existingUsername = await User.findOne({ username });
+        if(existingUsername) {
+            req.flash("error", "An account with this username already exists.");
+            return res.redirect("/signup");
+        }
+
+        // Check: If email already exists
+        const existingEmail = User.findOne({ email });
+        if(existingEmail) {
+            req.flash("error", "An account with this email already exists.")
+            return res.redirect("/signup");
+        }
+
         const newUser = new User({username, email, role});
         const registeredUser = await User.register(newUser, password);
         // console.log(registeredUser);
@@ -15,11 +30,11 @@ module.exports.signup = async (req, res) => {
                 return next(err);
             }
             req.flash("success", "Welcome to Wanderlust!");
-            res.redirect("/listings");
+            return res.redirect("/listings");
         });
     } catch(e) {
         req.flash("error", e.message);
-        res.redirect("/signup");
+        return res.redirect("/signup");
     }
 };
 
@@ -46,7 +61,7 @@ module.exports.logout = (req, res, next) => {
 
 module.exports.showWishList = async (req, res) => {
     const user = await User.findById(req.user._id).populate("wishlist");
-    res.render("users/wishlist.ejs", { wishlist: user.wishlist });
+    return res.render("users/wishlist.ejs", { wishlist: user.wishlist });
 };
 
 module.exports.addToWishlist = async (req, res) => {
@@ -56,7 +71,7 @@ module.exports.addToWishlist = async (req, res) => {
     user.wishlist.push(id);
     await user.save();
     // req.flash("success", "Listing added wishlist!");
-    res.redirect(`/listings/${id}`);
+    return res.redirect(`/listings/${id}`);
 };
 
 module.exports.removeFromWishList = async (req, res) => {
@@ -65,8 +80,21 @@ module.exports.removeFromWishList = async (req, res) => {
     user.wishlist = user.wishlist.filter((listingId) => listingId.toString() !== id);
     await user.save();
     const redirectUrl = req.headers.referer || "/wishlist";
-    res.redirect(redirectUrl);
+    return res.redirect(redirectUrl);
 };
 
+module.exports.showDashboard = async(req, res) => {
+    res.render("users/dashboard.ejs");
+}
 
-// console.log(req.path, "..", req.originalUrl)
+module.exports.showHelp = async(req, res) => {
+    res.render("users/help.ejs")
+}
+
+module.exports.showPrivacyPolicy = async(req, res) => {
+    res.render("users/privacy.ejs");
+}
+
+module.exports.showTerms = async(req, res) => {
+    res.render("users/terms.ejs");
+}

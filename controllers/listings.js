@@ -39,6 +39,8 @@ module.exports.createListing = async (req, res, next) => {
     newListing.owner = req.user._id;
     newListing.image = { url, filename };
     newListing.geometry = response.body.features[0].geometry;
+    newListing.instantBooking = req.body.listing.instantBooking;
+    
     await newListing.save();
     req.flash("success", "New Listing Created!");
     res.redirect("/listings");
@@ -99,7 +101,7 @@ module.exports.searchListings = async (req, res) => {
                 ]
         }).populate("reviews");
         setGuestFavouriteStatus(foundListings);
-        return res.render("listings/index.ejs", { allListings: foundListings });
+        return res.render("listings/index.ejs", { search, allListings: foundListings });
     }
     res.redirect("/listings");
 };
