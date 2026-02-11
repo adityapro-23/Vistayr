@@ -18,7 +18,7 @@
                             &nbsp;&nbsp;|&nbsp;&nbsp;
                             Status:&nbsp; <b class="dynamicbg rounded-pill" style="color: black;">&nbsp;<%= booking.status.toUpperCase() %>&nbsp;</b>
                         </p>
-                        <% if (booking.status !== "canceled") { %>
+                        <% if (booking.status !== "canceled" && booking.status !== "completed") { %>
                             <form action="/bookings/<%= booking._id %>?_method=DELETE" method="POST">
                                 <button class="btn btn-danger btn-sm">Cancel</button>
                             </form>

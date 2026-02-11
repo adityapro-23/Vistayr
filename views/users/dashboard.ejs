@@ -1,5 +1,158 @@
-<% layout("layouts/boilerplate") %>
+<!-- <% layout("layouts/boilerplate") %>
 
 <h1>Dashboard</h1>
 <br>
-<h3 style="color: red">Under Development...!!!</h3>
+<h3 style="color: red">Under Development...!!!</h3> -->
+
+<% layout("/layouts/boilerplate") %>
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Host Dashboard</h2>
+        <span class="badge bg-success" id="status-indicator">Live Updates On</span>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Total Revenue</h5>
+                    <h2 class="card-text" id="kpi-revenue">$0</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Occupancy Rate</h5>
+                    <h2 class="card-text" id="kpi-occupancy">0%</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">ADR (Avg Daily Rate)</h5>
+                    <h2 class="card-text" id="kpi-adr">$0</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Pending Requests</h5>
+                    <h2 class="card-text" id="kpi-pending">0</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Revenue Overview (This Year)</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-area">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Pending Actions</h6>
+                </div>
+                <div class="card-body" id="pending-container">
+                    <p class="text-center text-muted">Loading requests...</p>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    // 1. Initialize Chart
+    const ctx = document.getElementById('revenueChart').getContext('2d');
+    let revenueChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [], // Will be filled by AJAX
+            datasets: [{
+                label: 'Earnings ($)',
+                data: [],
+                borderColor: 'rgba(78, 115, 223, 1)',
+                backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+
+    // 2. The AJAX Fetch Function
+    async function fetchDashboardData() {
+        try {
+            const response = await fetch('/host/api/stats');
+            const data = await response.json();
+
+            // A. Update KPI Cards
+            document.getElementById('kpi-revenue').innerText = '$' + data.stats.totalRevenue.toLocaleString();
+            document.getElementById('kpi-occupancy').innerText = data.stats.occupancyRate + '%';
+            document.getElementById('kpi-adr').innerText = '$' + data.stats.adr;
+            document.getElementById('kpi-pending').innerText = data.stats.pendingCount;
+
+            // B. Update Chart
+            revenueChart.data.labels = data.chartData.labels;
+            revenueChart.data.datasets[0].data = data.chartData.data;
+            revenueChart.update();
+
+            // C. Update Pending Requests List
+            const pendingContainer = document.getElementById('pending-container');
+            if (data.recentBookings.length === 0) {
+                pendingContainer.innerHTML = '<p class="text-center text-muted">No pending requests.</p>';
+            } else {
+                let html = '<ul class="list-group list-group-flush">';
+                data.recentBookings.forEach(booking => {
+                    html += `
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>${booking.listing.title}</strong><br>
+                            <small class="text-muted">${new Date(booking.startDate).toLocaleDateString()} - ${new Date(booking.endDate).toLocaleDateString()}</small>
+                        </div>
+                        <div class="btn-group">
+                            <form action="/bookings/${booking._id}/status?_method=PUT" method="POST">
+                                <input type="hidden" name="status" value="confirmed">
+                                <button class="btn btn-sm btn-success">✓</button>
+                            </form>
+                            <form action="/bookings/${booking._id}/status?_method=PUT" method="POST" class="ms-1">
+                                <input type="hidden" name="status" value="canceled">
+                                <button class="btn btn-sm btn-danger">✗</button>
+                            </form>
+                        </div>
+                    </li>`;
+                });
+                html += '</ul>';
+                pendingContainer.innerHTML = html;
+            }
+
+        } catch (error) {
+            console.error('Error fetching dashboard data:', error);
+        }
+    }
+
+    // 3. Initial Load
+    fetchDashboardData();
+
+    // 4. Set Interval for "Real-Time" updates (every 10 seconds)
+    setInterval(fetchDashboardData, 10000);
+
+</script>

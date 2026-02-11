@@ -5,9 +5,17 @@ const User = require("../models/user");
 module.exports.createBooking = async (req, res) => {
     const { id } = req.params;
     const { startDate, endDate } = req.body;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if(new Date(startDate) < today) {
+        req.flash("error", "Start date cannot be in the past!");
+        return res.redirect("back");
+    }
+
     if(startDate > endDate) {
         req.flash("error", "End date must be after start date!")
-        return res.status(400).redirect("back");
+        return res.redirect("back");
     }
     const { user } = req;
     const listing = await Listing.findById(id);
@@ -28,10 +36,10 @@ module.exports.createBooking = async (req, res) => {
         });
     } else {
         overlappedBookings = await Booking.find({
-            lisiting: id,
+            listing: id,
             $and: [
                 { startDate: { $lte: endDate }, endDate: { $gte: startDate } },
-                { status: { $e: "confirmed" } }
+                { status: { $eq: "confirmed" } }
             ],
         });
     }
@@ -87,8 +95,33 @@ module.exports.cancelBooking = async (req, res) => {
     }
     booking.status = "canceled";
     await booking.save();
+    
     await User.findByIdAndUpdate(booking.user, {$pull: { bookings: booking._id}});
     await Listing.findByIdAndUpdate(booking.listing, {$pull: { bookings: booking._id }});
     req.flash("success", "Booking canceled successfully!");
     res.redirect("/bookings");
+};
+
+module.exports.updateBookingStatus = async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const booking = await Booking.findById(id).populate("listing");
+    
+    if (!booking) {
+        req.flash("error", "Booking not found!");
+        return res.redirect("/host");
+    }
+
+    // Security Check: Ensure the current user owns the property
+    if (!booking.listing.owner.equals(req.user._id)) {
+        req.flash("error", "You do not have permission to manage this booking.");
+        return res.redirect("/host");
+    }
+
+    booking.status = status;
+    await booking.save();
+
+    req.flash("success", `Booking ${status} successfully!`);
+    res.redirect("/host");
 };

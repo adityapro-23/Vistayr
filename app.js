@@ -20,6 +20,7 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 const bookingRouter = require("./routes/booking.js");
+const dashboardRouter = require("./routes/dashboard.js"); 
 
 app.engine("ejs", ejsMate);
 app.set("view engine", "ejs");
@@ -95,10 +96,11 @@ app.use((req, res, next) => {
 // });
 
 
+app.use("/", userRouter);
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/bookings", bookingRouter);
-app.use("/", userRouter);
+app.use("/host", dashboardRouter);
 
 
 app.all("*", (req, res, next) => {
