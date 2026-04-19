@@ -16,7 +16,7 @@
                             &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
                         </p>
                         <form action="/wishlist/<%= listing._id %>?_method=DELETE" method="POST">
-                            <button class="btn btn-danger btn-sm">Remove</button>
+                            <button class="btn removeFromWishlistBtn btn-sm">Remove</button>
                         </form>
                     </div>
                 </div>

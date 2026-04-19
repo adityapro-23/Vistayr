@@ -19,12 +19,12 @@
 
                 <% if (!currUser) { %>
                     <form method="GET" action="/listings/<%= listing._id %>/book">
-                        <button class="btn showPageBtn">Book Now</button>
+                        <button class="btn bookBtn">Book Now</button>
                     </form>
                 <% } else { %>
                     <% if (currUser && !currUser._id.equals(listing.owner._id)) { %>
                         <form method="GET" action="/listings/<%= listing._id %>/book">
-                            <button class="btn showPageBtn">Book Now</button>
+                            <button class="btn bookBtn">Book Now</button>
                         </form>
                     <% } %>
                 <% } %>
@@ -32,18 +32,18 @@
                 
                 <% if (!currUser) { %>
                     <form method="POST" action="/wishlist/<%= listing._id %>">
-                        <button class="btn btn-outline-primary">Add to Wishlist</button>
+                        <button class="btn addToWishlistBtn">Add to Wishlist</button>
                     </form>
                 <% } else { %>
                     <% if(currUser && !currUser._id.equals(listing.owner._id)) { %>
                         <% if (currUser.wishlist.includes(listing._id.toString())) { %>
                             <form method="POST" action="/wishlist/<%= listing._id %>?_method=DELETE" style="display: inline;">
-                                <button class="btn btn-outline-primary">Remove from Wishlist</button>
+                                <button class="btn removeFromWishlistBtn">Remove from Wishlist</button>
                             </form>
                         <% } else { %>
                             <% if (!currUser._id.equals(listing.owner._id)) { %>
                                 <form method="POST" action="/wishlist/<%= listing._id %>">
-                                    <button class="btn btn-outline-primary">Add to Wishlist</button>
+                                    <button class="btn addToWishlistBtn">Add to Wishlist</button>
                                 </form>
                             <% } %>
                         <% } %>

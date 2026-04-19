@@ -1,5 +1,9 @@
 const User = require("../models/user.js");
 
+module.exports.showLandingPage = (req, res) => {
+    res.render("users/landing.ejs");
+}
+
 module.exports.renderSignupForm = (req, res) => {
     res.render("users/signup.ejs");
 };
@@ -31,7 +35,7 @@ module.exports.signup = async (req, res) => {
             if(err) {
                 return next(err);
             }
-            req.flash("success", "Welcome to Wanderlust!");
+            req.flash("success", "Welcome to Vistayr!");
             return res.redirect("/listings");
         });
     } catch(e) {
@@ -45,7 +49,7 @@ module.exports.renderLoginForm = (req, res) => {
 };
 
 module.exports.login = async (req, res) => {
-    req.flash("success", "Welcome back to Wanderlust!");
+    req.flash("success", "Welcome back to Vistayr!");
     const redirectUrl = res.locals.redirectUrl || "/listings";
     delete req.session.redirectUrl;
     res.redirect(redirectUrl);

@@ -1,0 +1,61 @@
+<% layout("/layouts/landing-boilerplate") %>
+<style>
+    .landing-container {
+        background-color: #F0F9FF;
+    }
+
+    .content-wrapper {
+        position: relative;
+        z-index: 2;
+    }
+
+    .getStartedBtn {
+        color: white !important;
+        background-color: #001F5B;
+    }
+
+    .getStartedBtn:hover {
+        background-color: #002775e1;
+        border: 1px solid #FF9800;
+        color: #FF9800 !important;
+    }
+</style>
+<div class="landing-container min-vh-100 d-flex align-items-center">
+    <div class="content-wrapper row w-100 justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6 text-center">
+            <!-- Logo -->
+            <img src="/Vistayr_logo.png" alt="Vistayr Logo" class="img-fluid mb-4" style="max-width: 200px;">
+            
+            <!-- Welcome Message -->
+            <h1 class="display-4 fw-bold mb-3" style="color: #001F5B;">Welcome to Vistayr</h1>
+            <p class="lead text-muted mb-4">Discover amazing places to stay and create unforgettable memories.</p>
+            
+            <!-- Call to Action Buttons -->
+            <div class="d-flex justify-content-center gap-3 mb-5">
+                <a href="/listings" class="btn getStartedBtn btn-lg">Get Started</a>
+            </div>
+            
+            <!-- Additional Content or Features -->
+            <div class="row mt-5">
+                <div class="col-md-4 mb-3">
+                    <i class="fas fa-home fa-3x text-primary mb-2"></i>
+                    <h5>Find Your Perfect Stay</h5>
+                    <p>Browse through a variety of listings tailored to your needs.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <i class="fas fa-star fa-3x text-warning mb-2"></i>
+                    <h5>Top-Rated Experiences</h5>
+                    <p>Enjoy highly rated accommodations from verified hosts.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <i class="fas fa-globe fa-3x text-success mb-2"></i>
+                    <h5>Explore Everywhere</h5>
+                    <p>Travel to new destinations and connect with local communities.</p>
+                </div>
+            </div>
+            
+            <!-- Credit -->
+            <p class="mt-5 text-muted" style="font-size: 1.2rem;">Made with ❤️ by Aditya Patil</p>
+        </div>
+    </div>
+</div>

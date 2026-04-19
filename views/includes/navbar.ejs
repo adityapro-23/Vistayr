@@ -1,6 +1,6 @@
 <style>
 	.search-btn {
-		background-color: #fe424d;
+		background-color: #001F5B;
 		/* background-color: #553265; */
 		color: #fff;
 		border-radius: 25px;
@@ -8,7 +8,7 @@
 	}
 
 	.search-btn:hover {
-		background-color: #db3742;
+		background-color: #002775e1;
 		color: #fff;
 		transition: 0.3s ease-out;
 	}
@@ -21,19 +21,20 @@
 	.search-inp {
 		border-radius: 25px;
 		padding: 0.5rem 3rem 0.5rem 3rem;
+		border-color: #001F5B;
 	}
 
 </style>
 
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
     <div class="container-fluid">
-		<a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
+		<a class="navbar-brand" href="/listings"><img src="/Vistayr_logo.png" alt="Vistayr Logo" height="70"></a>
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 			<div class="navbar-nav">
-				<a class="nav-link" href="/listings">Explore</a>
+				<a class="nav-link" href="/listings">Vistayr</a>
 			</div>
 			<div class="navbar-nav ms-auto">
 				<form class="d-flex" role="search" method="GET" action="/listings/results">
@@ -42,12 +43,11 @@
 				</form>
 			</div>
 			<div class="navbar-nav ms-auto">
-				<a class="nav-link" href="/listings/new">Airbnb your home</a>
+				<a class="nav-link" href="/listings/new">Host a stay</a>
 				<% if(currUser) { %>
 					<div class="dropdown">
 						<a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							<img src="<%= currUser.profilePicture || '/default-profile.png' %>" class="profile-pic rounded-circle" alt="Profile">
-							<!-- <i class="fa-solid fa-user-circle" style="font-size: 1.5rem;"></i> -->
 						</a>
 						
 						<ul class="dropdown-menu dropdown-menu-end">

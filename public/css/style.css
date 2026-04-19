@@ -9,16 +9,31 @@ body {
     flex: 1;
 }
 
+/* Login and Signup */
+.loginBtn {
+    background-color: #001F5B !important;
+}
+
+.loginBtn:hover {
+    background-color: #002775e1 !important;
+    color: #FF9800 !important;
+    border: 1px solid #FF9800 !important;
+}
+
+.signupBtn {
+    background-color: #001F5B !important;
+}
+
+.signupBtn:hover {
+    background-color: #002775e1 !important;
+    color: #FF9800 !important;
+    border: 1px solid #FF9800 !important;
+}
+
 /* Navbar */
 .navbar {
     height: 5rem;
-    background-color: white;
-}
-
-.fa-compass {
-    /* color: #fe424d; */
-    color: #fe424d;
-    font-size: 2rem;
+    background-color: rgba(245, 245, 245, 0.7);
 }
 
 .nav-link {
@@ -35,6 +50,14 @@ body {
 .dropdown-toggle:hover {
     opacity: 1;
     transition: 0.3s ease-in-out;
+}
+
+.dropdown-menu {
+    background-color: #F5F5F5 !important;
+}
+
+.dropdown-menu li :hover {
+    background-color: #C6C6C6;
 }
 
 .profile-pic {
@@ -157,7 +180,7 @@ body {
     right: 0.5rem; 
     bottom: 3.5rem;
     color: #222222;
-    background-color: #ecf5ff !important;
+    background-color: #E0F7FA !important;
 }
 
 
@@ -173,7 +196,7 @@ body {
 
 /* New Page */
 .add-btn {
-    background-color: #fe424d !important;
+    background-color: #FF9800 !important;
     border: none !important;
 }
 
@@ -190,7 +213,7 @@ body {
 
 /* Edit Page */
 .edit-btn {
-    background-color: #fe424d !important;
+    background-color: #FF9800 !important;
     border: none !important;
 }
 
@@ -212,12 +235,40 @@ body {
     display: flex;
 }
 
-.showPageBtn {
-    background-color: white !important;
-    color: #fe424d !important;
-    border: none !important;
+
+.bookBtn {
+    color: white !important;
+    background-color: #001F5B !important;
     margin-right: 1rem;
-    border: 1px solid #fe424d !important;
+    border: 1px solid #001F5B !important;
+}
+
+.bookBtn:hover {
+    background-color: #002775e1 !important;
+    border: 1px solid #FF9800 !important;
+}
+
+.addToWishlistBtn {
+    background-color: white  !important;
+    color: #001F5B !important;
+    border: 1px solid #001F5B !important;
+}
+
+.addToWishlistBtn:hover {
+    color: white !important;
+    background-color: #001F5B !important;
+    border: 1px solid #FF9800 !important;
+}
+
+.removeFromWishlistBtn {
+    background-color: #FF9800 !important;
+    color: white !important;
+    border: 1px solid #FF9800 !important;
+}
+
+.removeFromWishlistBtn:hover {
+    color: white !important;
+    background-color: #001F5B !important;
 }
 
 /* Map */
