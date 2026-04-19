@@ -66,11 +66,6 @@ const sessionOptions = {
     },
 };
 
-// app.get("/", (req, res) => {
-//     res.send("Hi, I am root");
-// });
-
-
 app.use(session(sessionOptions));
 app.use(flash());
 
@@ -88,16 +83,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// app.get("/demouser", async (req, res) => {
-//     let fakeUser = new User({
-//         email: "student@gmail.com",
-//         username: "delta-student"
-//     });
-
-//     let registeredUser = await User.register(fakeUser, "helloworld");
-//     res.send(registeredUser);
-// });
-
 
 app.use("/", userRouter);
 app.use("/listings", listingRouter);
@@ -105,6 +90,10 @@ app.use("/listings/:id/reviews", reviewRouter);
 app.use("/bookings", bookingRouter);
 app.use("/dashboard", dashboardRouter);
 
+// Health Check Endpoint for Render
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+});
 
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found!"));
